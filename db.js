@@ -1,7 +1,6 @@
 const pg = require('pg');
 const url = require('url');
-//const model = require('pathForModel')
-const something = require ('./models/something');
+const users = require ('./models/users');
 var configs;
 
 if (process.env.DATABASE_URL) {
@@ -20,7 +19,7 @@ if (process.env.DATABASE_URL) {
         user: 'shan',
         password: 'shan',
         host: '127.0.0.1',
-        database: 'shan',
+        database: 'taxdb',
         port: 5432
     };
 }
@@ -33,7 +32,7 @@ pool.on('error', function (err) {
 
 module.exports = {
     //model: model(pool),
-    something: something(pool),
+    users: users(pool),
   
     //make queries directly from here
     queryInterface: (text, params, callback) => {
