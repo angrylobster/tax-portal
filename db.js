@@ -1,6 +1,6 @@
 const pg = require('pg');
 const url = require('url');
-const users = require ('./models/users');
+const users = require('./models/users');
 var configs;
 
 if (process.env.DATABASE_URL) {
@@ -33,12 +33,12 @@ pool.on('error', function (err) {
 module.exports = {
     //model: model(pool),
     users: users(pool),
-  
+
     //make queries directly from here
     queryInterface: (text, params, callback) => {
-      return pool.query(text, params, callback);
+        return pool.query(text, params, callback);
     },
-  
+
     // get a reference to end the connection pool at server end
-    pool:pool
-  };
+    pool: pool
+};
