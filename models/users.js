@@ -7,7 +7,7 @@ module.exports = db => {
 
     let user = (req, callback) => {
         db.query(`SELECT * FROM users WHERE id=${req.params.id}`, (err, result) => {
-            err ? callback(err, null) : result.rows ? callback(null, result.rows) : callback(null, null);
+            err ? callback(err, null) : result.rows ? callback(null, result.rows[0]) : callback(null, null);
         })
     }
 

@@ -15,7 +15,7 @@ module.exports = db => {
 
     let create = (req, res) => {
         db.users.create(req, (err, result) => {
-            err ? res.status(400).send({ error: 'Error creating user' })
+            err ? res.status(400).send({ error: err })
                 : res.status(200).send(result);
         })
     }
@@ -28,7 +28,6 @@ module.exports = db => {
     }
 
     let edit = (req, res) => {
-        console.log('edit', req);
         db.users.edit(req, (err, result) => {
             err ? res.status(400).send({ error: 'Error editing user' })
                 : res.status(200).send(result);

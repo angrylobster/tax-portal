@@ -31,4 +31,7 @@ app.get('*', (request, response) => {
   response.send('Page not found');
 });
 
+// Export this file for testing purposes
+module.exports = app;
+
 const server = app.listen(PORT, () => console.log('~~~ Tuning in to the waves of port ' + PORT + ' ~~~'));

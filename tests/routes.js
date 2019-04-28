@@ -1,0 +1,95 @@
+const chai = require('chai');
+const app = require('../index');
+const chaiHttp = require('chai-http');
+
+chai.use(chaiHttp);
+chai.should();
+
+describe('Users routes', () => {
+    describe('GET /users', () => {
+        it('should get all users', done => {
+            chai.request(app)
+                .get('/')
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    done();
+                });
+        })
+    })
+
+    describe('GET /users/:id', () => {
+        const id = 1;
+        it('should get a single user', done => {
+            chai.request(app)
+                .get(`/users/${id}`)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    done();
+                })
+        })
+
+        it('should not get a single user if id is invalid', done => {
+            chai.request(app)
+                .get('/users/string')
+                .end((err,res) => {
+                    res.should.have.status(400);
+                    done();
+                })
+        })
+    })
+
+    describe('POST /users/create', () => {
+        it('should create a user', done => {
+            chai.request(app)
+                .post('/users/create')
+                .send({
+                    email: 'email',
+                    password: 'password',
+                    address: 'address',
+                    taxRegistration: 'taxRegistration',
+                    contactNumber: 1234567
+                })
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    done();
+                })
+        })
+    })
+
+    describe('DELETE /users/destroy', () => {
+        it ('should delete a user', done => {
+            const id = 1;
+            chai.request(app)
+                .delete(`/users/destroy`)
+                .send({
+                    id: id
+                })
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    done();
+                })
+        })
+    })
+    
+    describe('PUT /users/edit/:id', () => {
+        it('should edit a user', done => {
+            const id = 1;
+            chai.request(app)
+                .put(`/users/edit/${id}`)
+                .send({
+                    email: 'editedemail',
+                    password: 'editedpassword',
+                    addres: 'editedaddress',
+                    taxRegistration: 'editedTaxRegistration',
+                    contactNumber: 12345678
+                })
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    done();
+                })
+        })
+    })
+
+})
