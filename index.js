@@ -1,12 +1,17 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
 const app = express();
 const PORT = process.env.PORT || 3001;
 const db = require('./db');
 
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(methodOverride('_method'));
 app.use(express.urlencoded({
-    extended: true
+  extended: true
 }));
 
 // ===================================================
@@ -26,4 +31,4 @@ app.get('*', (request, response) => {
   response.send('Page not found');
 });
 
-const server = app.listen(PORT, () => console.log('~~~ Tuning in to the waves of port '+PORT+' ~~~'));
+const server = app.listen(PORT, () => console.log('~~~ Tuning in to the waves of port ' + PORT + ' ~~~'));
