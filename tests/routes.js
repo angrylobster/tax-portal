@@ -6,13 +6,14 @@ chai.use(chaiHttp);
 chai.should();
 
 describe('Users routes', () => {
+
     describe('GET /users', () => {
         it('should get all users', done => {
             chai.request(app)
-                .get('/')
+                .get('/users')
                 .end((err, res) => {
                     res.should.have.status(200);
-                    res.body.should.be.a('object');
+                    res.body.should.be.a('array');
                     done();
                 });
         })
@@ -33,7 +34,7 @@ describe('Users routes', () => {
         it('should not get a single user if id is invalid', done => {
             chai.request(app)
                 .get('/users/string')
-                .end((err,res) => {
+                .end((err, res) => {
                     res.should.have.status(400);
                     done();
                 })
@@ -59,7 +60,7 @@ describe('Users routes', () => {
     })
 
     describe('DELETE /users/destroy', () => {
-        it ('should delete a user', done => {
+        it('should delete a user', done => {
             const id = 1;
             chai.request(app)
                 .delete(`/users/destroy`)
@@ -72,7 +73,7 @@ describe('Users routes', () => {
                 })
         })
     })
-    
+
     describe('PUT /users/edit/:id', () => {
         it('should edit a user', done => {
             const id = 1;
@@ -92,4 +93,92 @@ describe('Users routes', () => {
         })
     })
 
-})
+});
+
+describe('Submissions routes', () => {
+
+    describe('GET /submissions', () => {
+        it('should get all submissions', done => {
+            chai.request(app)
+                .get('/submissions')
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('array');
+                    done();
+                });
+        })
+    })
+
+    describe('GET /submissions/:id', () => {
+        const id = 1;
+        it('should get a single submission', done => {
+            chai.request(app)
+                .get(`/submissions/${id}`)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    done();
+                })
+        })
+
+        it('should not get a single user if id is invalid', done => {
+            chai.request(app)
+                .get('/submissions/string')
+                .end((err, res) => {
+                    res.should.have.status(400);
+                    done();
+                })
+        })
+    })
+
+    describe('POST /submissions/create', () => {
+        const jsonObject = {'key': 'value', 'anotherKey': 'anotherValue'}
+        it('should create a submission', done => {
+            chai.request(app)
+                .post('/submissions/create')
+                .send({
+                    submission: JSON.stringify(jsonObject),
+                    userId: 1,
+                    year: 2019,
+                })
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    done();
+                })
+        })
+    })
+
+    describe('DELETE /submissions/destroy', () => {
+        it('should delete a submission', done => {
+            const id = 1;
+            chai.request(app)
+                .delete(`/submissions/destroy`)
+                .send({
+                    id: id
+                })
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    done();
+                })
+        })
+    })
+
+    describe('PUT /submissions/edit/:id', () => {
+        const jsonObject = {'submission': 'value', 'anotherKey': 'anotherValue'}
+        it('should edit a submission', done => {
+            const id = 1;
+            chai.request(app)
+                .put(`/submissions/edit/${id}`)
+                .send({
+                    submission: JSON.stringify(jsonObject),
+                    userId: 1,
+                    year: 2019,
+                })
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    done();
+                })
+        })
+    })
+
+});

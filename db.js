@@ -1,6 +1,7 @@
 const pg = require('pg');
 const url = require('url');
 const users = require('./models/users');
+const submissions = require ('./models/submissions');
 var configs;
 
 if (process.env.DATABASE_URL) {
@@ -33,6 +34,7 @@ pool.on('error', function (err) {
 module.exports = {
     //model: model(pool),
     users: users(pool),
+    submissions: submissions(pool),
 
     //make queries directly from here
     queryInterface: (text, params, callback) => {
