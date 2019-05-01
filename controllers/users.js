@@ -15,8 +15,13 @@ module.exports = db => {
 
     let create = (req, res) => {
         db.users.create(req, (err, result) => {
-            err ? res.status(400).send({ error: err })
-                : res.status(200).send(result);
+            if (err){
+                res.status(400).send({ queryError: 'There was an error in creating the user' });
+            } else if (result.errors.length > 0) {
+                res.status(403).send(result);
+            } else {
+                res.status(200).send(result);
+            }
         })
     }
 
@@ -29,8 +34,13 @@ module.exports = db => {
 
     let edit = (req, res) => {
         db.users.edit(req, (err, result) => {
-            err ? res.status(400).send({ error: 'Error editing user' })
-                : res.status(200).send(result);
+            if (err){
+                res.status(400).send({ queryError: 'There was an error in editing the user' });
+            } else if (result.errors && result.errors.length > 0) {
+                res.status(403).send(result);
+            } else {
+                res.status(200).send(result);
+            }
         })
     }
 

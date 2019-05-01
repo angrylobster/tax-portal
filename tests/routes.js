@@ -1,6 +1,7 @@
 const chai = require('chai');
 const app = require('../index');
 const chaiHttp = require('chai-http');
+const sha256 = require('sha256');
 
 chai.use(chaiHttp);
 chai.should();
@@ -42,18 +43,35 @@ describe('Users routes', () => {
     })
 
     describe('POST /users/create', () => {
-        it('should create a user', done => {
+        // it('should create a user', done => {
+        //     chai.request(app)
+        //         .post('/users/create')
+        //         .send({
+        //             email: 'email',
+        //             password: 'password',
+        //             address: 'address',
+        //             taxRegistration: 'taxRegistration',
+        //             contactNumber: 1234567
+        //         })
+        //         .end((err, res) => {
+        //             res.should.have.status(200);
+        //             done();
+        //         })
+        // })
+
+        it('should throw an error if the email already exists', done => {
             chai.request(app)
                 .post('/users/create')
                 .send({
-                    email: 'email',
-                    password: 'password',
+                    email: 'email@email.com', 
+                    password: sha256('password'), 
+                    confirmPassword: sha256('password'),
                     address: 'address',
-                    taxRegistration: 'taxRegistration',
-                    contactNumber: 1234567
+                    taxRegistration: '7654321',
+                    contactNumber: '1234567'
                 })
                 .end((err, res) => {
-                    res.should.have.status(200);
+                    res.should.have.status(403);
                     done();
                 })
         })
@@ -80,9 +98,10 @@ describe('Users routes', () => {
             chai.request(app)
                 .put(`/users/edit/${id}`)
                 .send({
-                    email: 'editedemail',
+                    email: 'editedemail@editedemail.com',
                     password: 'editedpassword',
-                    addres: 'editedaddress',
+                    confirmPassword: 'editedpassword',
+                    address: 'editedaddress',
                     taxRegistration: 'editedTaxRegistration',
                     contactNumber: 12345678
                 })
