@@ -16,11 +16,11 @@ module.exports = db => {
     let create = (req, res) => {
         db.users.create(req, (err, result) => {
             if (err){
-                res.status(400).send({ queryError: 'There was an error in creating the user' });
-            } else if (result.errors.length > 0) {
-                res.status(403).send(result);
+                res.status(400).json({ queryError: 'There was an error in creating the user' });
+            } else if (result.errors && result.errors.length > 0) {
+                res.status(403).json(result);
             } else {
-                res.status(200).send(result);
+                res.status(200).json(result);
             }
         })
     }

@@ -10,8 +10,7 @@ import Home from './components/Home';
 import Submission from './components/Submission';
 import Registration from './components/users/Registration';
 import Edit from './components/users/Edit';
-
-const Login = () => <p>Login</p>
+import Login from './components/users/Login';
 
 class App extends Component {
 	render() {
